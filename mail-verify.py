@@ -1,24 +1,34 @@
 from validate_email import validate_email
-
+import os
+import sys
 
 
 def check(email):
-    if email is list:
+    if isinstance(email, list):
         emails = email
         i = 0
         goods = []
+
         for email in emails:
-            status = str(validate_email(email, verify=True))
-            if status == "True":
+            email=email.replace("\n","")
+            print("Checking " + email)
+            status = validate_email(email, verify=True)
+            if status:
                 goods.append(email)
-                print(email + ' status: ' + status)
+                print(str(status))
+            else:
+                print(status)
+                
+        return print(goods)
     else:
-        return str(validate_email(email, verify=True))
+        return "Exist" if validate_email(email, verify=True) else "Not exist"
+    
 
 
-
-
-
+if  len(sys.argv) > 1:
+    for i in range(1, len(sys.argv)):
+        print(f"{sys.argv[i]} - {check(sys.argv[i])}")
+    sys.exit()
 email = input('Enter email OR use list[L]: ')
 
 if email == "L":
@@ -27,6 +37,7 @@ if email == "L":
     emails = f.readlines()
 
     check(emails)
+    
 else:
     print(check(email))
 
